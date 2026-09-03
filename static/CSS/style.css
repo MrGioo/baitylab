@@ -1,0 +1,289 @@
+/* --- VARIABLES DE TEMA --- */
+:root {
+    --bg: #f5f5dc; 
+    --text: #2d2d2a;
+    --text-muted: #5d5d5a;
+    --primary: #556b2f; 
+    --primary-hover: #6b8e23;
+    --card-bg: #ffffff;
+    --card-border: #dcdcdc;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --hero-bg: linear-gradient(-45deg, #a9ba9d, #f5f5dc, #8b4513, #f5f5dc); 
+}
+
+[data-theme="dark"] {
+    --bg: #1a1a1a;
+    --text: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --primary: #9acd32; 
+    --primary-hover: #adff2f;
+    --card-bg: #262626;
+    --card-border: #333;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --hero-bg: linear-gradient(-45deg, #1a1a1a, #2d2d2a, #556b2f, #000);
+}
+
+/* --- ESTILOS BASE Y ACCESIBILIDAD --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    font-family: 'Inter', system-ui, sans-serif; 
+    color: var(--text); 
+    background: var(--bg); 
+    line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* --- ELEMENTOS COMUNES --- */
+.btn-primary { 
+    background: var(--primary); color: #fff; padding: 0.8rem 2rem; 
+    border-radius: 8px; font-weight: 600; cursor: pointer; border: none;
+    transition: all 0.3s ease; text-decoration: none; display: inline-block;
+}
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+
+.theme-toggle {
+    background: none; border: none; font-size: 1.5rem; cursor: pointer;
+    color: var(--text); padding: 0.5rem; transition: transform 0.3s;
+}
+.theme-toggle:hover { transform: scale(1.1); }
+
+/* --- SECCIONES PRINCIPALES --- */
+.header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; }
+.header h1 { font-size: 1.75rem; color: var(--primary); text-transform: uppercase; font-weight: 800; }
+.nav-controls { display: flex; gap: 1rem; align-items: center; }
+
+.hero { 
+    text-align: center; padding: 6rem 1rem; border-radius: 24px; margin: 1rem 0 3rem; 
+    background: var(--hero-bg); background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite; border: 1px solid var(--card-border);
+}
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.hero h2 { font-size: 3rem; margin-bottom: 1rem; font-weight: 800; letter-spacing: -1px; }
+.hero p { font-size: 1.25rem; color: var(--text-muted); max-width: 650px; margin: 0 auto 2.5rem; }
+.hero h1 span { font-size: 0.8rem; vertical-align: middle; color: #ff4500; text-transform: none; }
+
+.stats { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 2rem; margin: 4rem 0; }
+.stat-item { text-align: center; }
+.stat-number { font-size: 3rem; font-weight: 800; color: var(--primary); }
+.stat-label { font-size: 1.1rem; color: var(--text-muted); font-weight: 600; }
+
+.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 4rem 0; }
+.feature-card { padding: 2rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; text-align: center; transition: transform 0.3s, box-shadow 0.3s; }
+.feature-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+.feature-card h3 { color: var(--primary); margin-bottom: 1rem; font-size: 1.4rem; }
+
+/* --- CARRUSEL --- */
+.carousel-container { width: 100%; position: relative; overflow: hidden; border-radius: 16px; box-shadow: var(--shadow); background: #000; margin-bottom: 4rem;}
+.carousel-slide { display: flex; height: 450px; position: relative; }
+.carousel-item { min-width: 100%; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1; visibility: hidden; }
+.carousel-item.active { opacity: 1; z-index: 2; position: relative; visibility: visible; }
+.carousel-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; }
+.carousel-caption { position: absolute; bottom: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); color: white; width: 100%; padding: 3rem 2rem 1.5rem; text-align: center; }
+.carousel-prev, .carousel-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0, 0.6); color: white; border: none; width: 50px; height: 50px; cursor: pointer; z-index: 10; border-radius: 50%; margin: 0 15px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+.carousel-next { right: 0; }
+.carousel-indicators { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 10px; }
+.dot { width: 12px; height: 12px; background: rgba(255,255,255,0.4); border-radius: 50%; cursor: pointer; border: none; padding: 0; }
+.dot.active { background: #fff; transform: scale(1.2); }
+
+.carousel-item.active img {
+    animation: glitch 3s infinite;
+}
+@keyframes glitch {
+    0% { transform: translate(0) }
+    1% { transform: translate(-2px, 2px) }
+    2% { transform: translate(2px, -2px) }
+    3% { transform: translate(0) }
+    100% { transform: translate(0) }
+}
+
+/* --- FAQ --- */
+.faq-section { max-width: 800px; margin: 5rem auto; }
+.faq-section h2 { text-align: center; margin-bottom: 2rem; font-size: 2rem; }
+.faq-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; margin-bottom: 1rem; overflow: hidden; }
+.faq-btn { width: 100%; text-align: left; padding: 1.5rem; font-size: 1.1rem; font-weight: 600; background: none; border: none; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.faq-answer { padding: 0 1.5rem; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; color: var(--text-muted); }
+.faq-item.active .faq-answer { padding: 0 1.5rem 1.5rem; max-height: 200px; }
+.faq-item.active .faq-btn span { transform: rotate(45deg); }
+.faq-btn span { transition: transform 0.3s; font-size: 1.5rem; color: var(--primary); }
+
+.footer { background-color: #0f172a; color: #f8fafc; margin-top: 5rem; padding: 4rem 1.5rem 2rem; text-align: center; border-radius: 24px 24px 0 0; }
+
+/* --- EASTER EGGS Y ANIMACIONES ESPECIALES --- */
+#ojos-secretos {
+    background: none; border: none; cursor: pointer; font-size: 1.2rem; transition: transform 0.3s; padding: 0; color: inherit; display: inline-block;
+}
+#ojos-secretos:hover, #ojos-secretos:focus-visible { transform: scale(1.5); }
+
+#secret-corner { position: fixed; bottom: 0; right: 0; width: 50px; height: 50px; z-index: 9999; }
+
+#secret-popup {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); 
+    background: var(--card-bg); padding: 20px; border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7); z-index: 10000; text-align: center;
+    border: 2px solid var(--primary); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+#secret-popup.show { transform: translate(-50%, -50%) scale(1); }
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+body.shaking { animation: shake 0.4s; animation-iteration-count: 1; }
+
+#easter-clue {
+    cursor: help; opacity: 0.15; transition: opacity 0.4s ease, transform 0.3s ease; display: inline-block; margin-left: 8px;
+}
+#easter-clue:hover { opacity: 1; transform: scale(1.3); }
+
+@keyframes portalSuck {
+    0% { transform: scale(1) rotate(0deg); filter: blur(0px) brightness(1); }
+    50% { filter: blur(5px) brightness(1.5); }
+    100% { transform: scale(0.01) rotate(720deg); filter: blur(20px) brightness(0); opacity: 0; }
+}
+body.efecto-teletransporte {
+    animation: portalSuck 1.5s forwards ease-in-out; pointer-events: none; background-color: #000;
+}
+
+/* --- PREFERENCIA REDUCCIÓN DE MOVIMIENTO (WCAG 2.2.2) --- */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .hero {
+        animation: none; 
+        background-position: 0% 50%;
+    }
+    body.efecto-teletransporte, body.shaking {
+        animation: none; 
+    }
+}
+
+/* Contenedor de cada imagen de la galería */
+.galeria-item {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Reglas estrictas para las imágenes */
+.galeria-item img {
+    width: 100%;       /* Ocupa todo el ancho de su tarjeta */
+    height: 220px;     /* Fija una altura exacta para todas (puedes cambiar los píxeles a tu gusto) */
+    object-fit: cover; /* Recorta la imagen inteligentemente para que llene el espacio sin deformarse */
+    display: block;
+}
+
+.form-section {
+    max-width: 600px;
+    margin: 4rem auto;
+    background: var(--bg-card, #ffffff);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.form-section h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--text-main, #333);
+}
+
+.baity-form .form-group {
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.baity-form label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.baity-form input,
+.baity-form select,
+.baity-form textarea {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 6px;
+    font-size: 1rem;
+    background: var(--input-bg, #fff);
+    color: inherit;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.baity-form input:focus,
+.baity-form select:focus,
+.baity-form textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.baity-form textarea {
+    resize: vertical;
+}
+
+.baity-form .btn-primary {
+    width: 100%;
+    padding: 0.85rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+/* --- ESTILOS PARA EL MENÚ DE NAVEGACIÓN NUEVO --- */
+.main-nav {
+    background-color: var(--card-bg);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow);
+}
+
+.main-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+.main-nav a:hover {
+    color: var(--primary-hover);
+    transform: translateY(-2px);
+}

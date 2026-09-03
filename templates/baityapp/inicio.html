@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" type="image/png" href="Images/Baitybait_logo.ico">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BaityBait — El Vertedero de Steam</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+    <script src="{% static 'JS/main.js' %}"></script>
+    <style>
+        /* Estilos rápidos para el menú de navegación integrado */
+        .main-nav {
+            background-color: var(--bg-card, rgba(255, 255, 255, 0.05));
+            padding: 0.75rem 1.5rem;
+            margin: 1rem 0 2rem 0;
+            border-radius: 8px;
+            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+        }
+        .main-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .main-nav a {
+            text-decoration: none;
+            color: var(--text-main, #6366f1);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: opacity 0.2s ease;
+        }
+        .main-nav a:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Baity Lab <span>(Beta Rota)</span></h1> 
+            <div class="nav-controls">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">🌙</button>
+                <a class="btn-primary" href="#preorder">Precomprar Humo</a>
+            </div>
+        </header>
+
+        <!-- MENÚ DE NAVEGACIÓN A LAS OTRAS PÁGINAS -->
+        <nav class="main-nav">
+            <ul>
+                <li><a href="{% url 'galeria' %}">Galería</a></li>
+                <li><a href="{% url 'formulario' %}">Formulario</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="hero">
+                <h2>Juegos a 80 pavos y sin terminar</h2>
+                <p>Aprende a reciclar assets, abusar de los micropagos y decir que "it just works" mientras tu juego crashea en la cara de los usuarios.</p>
+                <button class="btn-primary">Ver el Vertedero</button>
+            </section>
+
+            <section class="stats" id="stats-section">
+                <div class="stat-item">
+                    <div class="stat-number"><span class="counter" data-target="80">0</span>€</div>
+                    <div class="stat-label">Precio Edición Estándar</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number"><span class="counter" data-target="15000">0</span>+</div>
+                    <div class="stat-label">Bugs del Día 1</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number"><span class="counter" data-target="15">0</span></div>
+                    <div class="stat-label">Cuantas Vacas Tengo</div>
+                </div>
+            </section>
+
+            <section class="carousel-container" aria-roledescription="carousel" aria-label="Noticias de la industria">
+                <div class="carousel-slide" aria-live="polite" id="carousel-live-region">
+                    <div class="carousel-item active" role="group" aria-roledescription="slide" aria-label="1 de 3">
+                        <img src="{% static 'images/bethesda-game-studios-1.avif' %}" alt="Consola vieja quemándose">
+                        <div class="carousel-caption">
+                            <h3>"It Just Works"</h3>
+                            <p>Bethesda lo ha vuelto a hacer: Skyrim para tu tostadora inteligente.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item" role="group" aria-roledescription="slide" aria-label="2 de 3">
+                        <img src="{% static 'images/juegoomori.avif' %}" alt="Código con errores">
+                        <div class="carousel-caption">
+                            <h3>Indie Pretencioso Starter Pack</h3>
+                            <p>Gráficos de GameBoy y mucha depresión. GOTY instantáneo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item" role="group" aria-roledescription="slide" aria-label="3 de 3">
+                        <img src="{% static 'images/Activision-Symbol.avif' %}" alt="Gente sufriendo">
+                        <div class="carousel-caption">
+                            <h3>Crunch Time</h3>
+                            <p>¿Dormir? Eso no está en el roadmap de la empresa.</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-prev" aria-label="Hype anterior" aria-controls="carousel-live-region">&#10094;</button>
+                <button class="carousel-next" aria-label="Siguiente retraso" aria-controls="carousel-live-region">&#10095;</button>
+                <div class="carousel-indicators">
+                    <button class="dot active" data-slide="0" aria-label="Skyrim" aria-current="true"></button>
+                    <button class="dot" data-slide="1" aria-label="Indie" aria-current="false"></button>
+                    <button class="dot" data-slide="2" aria-label="Explotación" aria-current="false"></button>
+                </div>
+            </section>
+
+            <section class="features">
+                <article class="feature-card">
+                    <h3>Micropagos Abusivos</h3>
+                    <p>Skins a 20 pavos para un juego que ya te costó 80. Porque te queremos.</p>
+                </article>
+                <article class="feature-card">
+                    <h3>Pases de Batalla</h3>
+                    <p>Juega 40 horas al día para desbloquear un sombrero de color marrón.</p>
+                </article>
+                <article class="feature-card">
+                    <h3>Promesas de Molyneux</h3>
+                    <p>Cosas que nunca estarán en el juego, pero que quedan bien en el tráiler.</p>
+                </article>
+            </section>
+
+            <section class="faq-section">
+                <h2>Preguntas (No) Frecuentes</h2>
+                <div class="faq-item">
+                    <button class="faq-btn" aria-expanded="false" aria-controls="f1">¿Tiene el juego lootboxes? <span aria-hidden="true">+</span></button>
+                    <div id="f1" class="faq-answer"><p>No las llamamos lootboxes, las llamamos "mecánicas de sorpresa ética" y cuestan 2,50€ la tirada.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-btn" aria-expanded="false" aria-controls="f2">¿Cuándo sale el parche de rendimiento? <span aria-hidden="true">+</span></button>
+                    <div id="f2" class="faq-answer"><p>Cuando el becario aprenda a optimizar el código espagueti que heredó de 2004.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-btn" aria-expanded="false" aria-controls="f3">¿Puedo pedir reembolso? <span aria-hidden="true">+</span></button>
+                    <div id="f3" class="faq-answer"><p>Claro, pero nuestro sistema de tickets casualmente estará "en mantenimiento" durante los próximos 10 años.</p></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer-bottom" style="text-align: center; padding: 2rem 0; margin-top: 3rem; color: var(--text-muted);">
+        <p>© 2026 Baity Lab - "It Just Works". <button id="ojos-secretos" title="¿Buscas el DLC?" aria-label="Descubrir secreto">👀</button></p>
+    </footer>
+
+    <audio id="click-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
+    <audio id="oof-sound" src="https://www.myinstants.com/media/sounds/fahhhhhhhhhhhhhh.mp3" preload="auto"></audio>
+    <script src="{% static 'JS/main.js' %}"></script>
+</body>
+</html>
