@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Imágenes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Estilos del menú de navegación superior */
+        .main-nav {
+            background-color: #ffffff;
+            padding: 1rem 1.5rem;
+            margin: 0 auto 2rem auto;
+            max-width: 1000px;
+            border-radius: 12px;
+            border: 1px solid #dcdcdc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .main-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+        }
+        .main-nav a {
+            text-decoration: none;
+            color: #556b2f;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+        .main-nav a:hover {
+            color: #6b8e23;
+            transform: translateY(-2px);
+        }
+
+        .galeria-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .galeria-container h1 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        /* Contenedor de la cuadrícula con Flexbox */
+        .galeria-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .galeria-item {
+            position: relative; 
+            width: 350px;  /* Ancho de la tarjeta */
+            height: 240px; /* Alto de la tarjeta */
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .galeria-item:hover {
+            transform: translateY(-5px);
+        }
+
+        /* La imagen ocupa toda la tarjeta de fondo */
+        .galeria-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Evita deformaciones */
+            display: block;
+        }
+
+        /* Tarjeta de datos oculta por defecto que aparece al hacer hover */
+        .galeria-info {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.88); /* Fondo opaco para leer mejor */
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            
+            /* Efecto de transición invisible inicialmente */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        /* Al pasar el mouse se muestra la información */
+        .galeria-item:hover .galeria-info {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .galeria-info h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.4rem;
+            color: #fff;
+        }
+
+        .galeria-info .raza {
+            font-weight: bold;
+            font-size: 1.05rem;
+            color: #818cf8;
+            margin-bottom: 8px;
+        }
+
+        .galeria-info .descripcion {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menú de navegación integrado -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="{% url 'inicio' %}">Inicio</a></li>
+            <li><a href="{% url 'formulario' %}">Formulario</a></li>
+        </ul>
+    </nav>
+
+    <div class="galeria-container">
+        <h1>Galeria para la nota</h1>
+        
+        <div class="galeria-grid">
+            <!-- Bucle dinámico que recorre la estructura enviada desde la vista (BD) -->
+            {% for item in elementos %}
+                <div class="galeria-item">
+                    <!-- Fotografía -->
+                    {% if item.imagen %}
+                        <img src="{{ item.imagen.url }}" alt="{{ item.nombre }}">
+                    {% else %}
+                        <!-- Imagen por defecto si no subiste ninguna en el admin -->
+                        <img src="{% static 'images/vaca.avif' %}" alt="Imagen no disponible">
+                    {% endif %}
+                    
+                    <!-- Tarjeta con los datos al pasar el cursor -->
+                    <div class="galeria-info">
+                        <h3>{{ item.nombre }}</h3>
+                        <!-- Cambiamos raza por categoria -->
+                        <span class="categoria">{{ item.categoria }}</span>
+                        <p class="descripcion">{{ item.descripcion }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>
