@@ -48,6 +48,12 @@
             <h1>Baity Lab <span>(Beta Rota)</span></h1> 
             <div class="nav-controls">
                 <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">🌙</button>
+                
+                <!-- BOTÓN EXCLUSIVO PARA EL ADMIN -->
+                {% if user.is_superuser %}
+                    <a class="btn-primary" href="/admin/" style="background-color: #dc3545;">Panel Admin</a>
+                {% endif %}
+                
                 <a class="btn-primary" href="#preorder">Precomprar Humo</a>
             </div>
         </header>
@@ -57,10 +63,25 @@
             <ul>
                 <li><a href="{% url 'galeria' %}">Galería</a></li>
                 <li><a href="{% url 'formulario' %}">Formulario</a></li>
+                
+                <!-- Agregamos iniciar y cerrar sesión -->
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="#">Usuario: <b>{{ user.username }}</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="{% url 'logout' %}">Cerrar Sesión</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
+                    </li>
+                {% endif %}
+                <!-- -------------------------------- -->
             </ul>
         </nav>
-
         <main>
+            {% block contenido %}
             <section class="hero">
                 <h2>Juegos a 80 pavos y sin terminar</h2>
                 <p>Aprende a reciclar assets, abusar de los micropagos y decir que "it just works" mientras tu juego crashea en la cara de los usuarios.</p>
@@ -145,6 +166,7 @@
                     <div id="f3" class="faq-answer"><p>Claro, pero nuestro sistema de tickets casualmente estará "en mantenimiento" durante los próximos 10 años.</p></div>
                 </div>
             </section>
+            {% endblock %}
         </main>
     </div>
 

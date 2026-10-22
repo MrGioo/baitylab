@@ -1,0 +1,25 @@
+{% extends "baityapp/inicio.html" %}
+
+{% block contenido %}
+{% load static %}
+{% load crispy_forms_tags%}
+
+<div class="row">
+    <div class="card col-4 offset-4 shadow-lg">
+        <img src="{% static 'images/logo.png' %}" alt="logo" class="card-img-top">
+        <div class="card-body">
+            <h5 class="card-title text-primary">Inicio de Sesion</h5>
+            <hr>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form | crispy}}
+                <div class="d-flex justify-content-end">
+                    <input class="btn btn-secondary" type="reset" value="Cancelar">&nbsp;
+                    <input class="btn btn-dark" type="submit" value="Ingresar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
