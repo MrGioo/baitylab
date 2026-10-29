@@ -195,16 +195,17 @@ body.efecto-teletransporte {
 .form-section {
     max-width: 600px;
     margin: 4rem auto;
-    background: var(--bg-card, #ffffff);
+    background: var(--card-bg);
     padding: 2.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--card-border);
 }
 
 .form-section h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: var(--text-main, #333);
+    color: var(--text);
 }
 
 .baity-form .form-group {
@@ -223,11 +224,11 @@ body.efecto-teletransporte {
 .baity-form select,
 .baity-form textarea {
     padding: 0.75rem;
-    border: 1px solid var(--border-color, #ccc);
+    border: 1px solid var(--card-border);
     border-radius: 6px;
     font-size: 1rem;
-    background: var(--input-bg, #fff);
-    color: inherit;
+    background: var(--bg);
+    color: var(--text);
     font-family: inherit;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -236,8 +237,8 @@ body.efecto-teletransporte {
 .baity-form select:focus,
 .baity-form textarea:focus {
     outline: none;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(154, 205, 50, 0.2);
 }
 
 .baity-form textarea {
@@ -286,4 +287,167 @@ body.efecto-teletransporte {
 .main-nav a:hover {
     color: var(--primary-hover);
     transform: translateY(-2px);
+}
+
+/* --- MENÚ DE NAVEGACIÓN MEJORADO --- */
+.main-nav {
+    background-color: var(--card-bg);
+    padding: 1rem 2rem;
+    margin: 2rem auto 3rem auto;
+    max-width: 800px;
+    border-radius: 50px; /* Forma de píldora moderna */
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow);
+}
+
+.main-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap; /* Permite que se adapte en celulares */
+}
+
+.main-nav .nav-link {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+/* Efecto hover general para los links */
+.main-nav .nav-link:hover {
+    color: var(--primary);
+    background: var(--bg);
+    border: 1px solid var(--card-border);
+    transform: translateY(-2px);
+}
+
+/* Identificador visual del usuario logueado */
+.main-nav .user-badge {
+    color: var(--primary);
+    font-weight: 800;
+    padding: 0.6rem 1.2rem;
+    background: var(--bg);
+    border-radius: 25px;
+    border: 1px dashed var(--primary);
+    display: inline-block;
+}
+
+/* Botón de Cerrar Sesión (Destacado en rojo) */
+.main-nav .logout-btn {
+    color: #dc3545;
+}
+
+.main-nav .logout-btn:hover {
+    color: #fff;
+    background: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Botón de Iniciar Sesión (Llamado a la acción) */
+.main-nav .login-btn {
+    background: var(--primary);
+    color: #fff;
+}
+
+.main-nav .login-btn:hover {
+    background: var(--primary-hover);
+    color: #fff;
+    border-color: transparent;
+}
+
+/* --- GALERÍA DE IMÁGENES --- */
+.galeria-container {
+    max-width: 1000px;
+    margin: 3rem auto 5rem auto;
+    text-align: center;
+}
+
+.galeria-container h1 {
+    margin-bottom: 2rem;
+    color: var(--text); /* Texto dinámico claro/oscuro */
+}
+
+.galeria-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.galeria-item {
+    position: relative; 
+    width: 350px;
+    height: 240px;
+    background: var(--card-bg); /* Fondo dinámico */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow); /* Sombra dinámica */
+    border: 1px solid var(--card-border); /* Borde sutil */
+    transition: transform 0.3s ease;
+}
+
+.galeria-item:hover {
+    transform: translateY(-5px);
+}
+
+.galeria-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* El fondo superpuesto al hacer hover se mantiene oscuro por diseño */
+.galeria-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.88); 
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.galeria-item:hover .galeria-info {
+    opacity: 1;
+    visibility: visible;
+}
+
+.galeria-info h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.4rem;
+    color: #fff;
+}
+
+.galeria-info .categoria {
+    font-weight: bold;
+    font-size: 1.05rem;
+    color: var(--primary); /* Hereda el verde corporativo del Vertedero */
+    margin-bottom: 8px;
+}
+
+.galeria-info .descripcion {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #e2e8f0;
+    line-height: 1.4;
 }

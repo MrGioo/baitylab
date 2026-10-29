@@ -1,25 +1,47 @@
 {% extends "baityapp/inicio.html" %}
+{% load static %}
 
 {% block contenido %}
-{% load static %}
-{% load crispy_forms_tags%}
-
-<div class="row">
-    <div class="card col-4 offset-4 shadow-lg">
-        <img src="{% static 'images/logo.png' %}" alt="logo" class="card-img-top">
-        <div class="card-body">
-            <h5 class="card-title text-primary">Inicio de Sesion</h5>
-            <hr>
-            <form method="POST">
-                {% csrf_token %}
-                {{ form | crispy}}
-                <div class="d-flex justify-content-end">
-                    <input class="btn btn-secondary" type="reset" value="Cancelar">&nbsp;
-                    <input class="btn btn-dark" type="submit" value="Ingresar">
-                </div>
-            </form>
+<div style="max-width: 450px; margin: 4rem auto; padding: 0 15px;">
+    <section class="form-section">
+        
+        <!-- Cabecera del Login -->
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <img src="{% static 'images/logo.png' %}" alt="Baity Lab Logo" style="width: 110px; height: 110px; object-fit: cover; border-radius: 50%; box-shadow: var(--shadow); margin-bottom: 1rem; border: 2px solid var(--primary);">
+            <h2 style="color: var(--primary); font-weight: 800; margin-bottom: 0.5rem; font-size: 1.8rem;">Acceso al Vertedero</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Prepara tu cartera y tu paciencia para los bugs.</p>
         </div>
-    </div>
-</div>
 
+        <!-- Formulario integrado con tus estilos CSS -->
+        <form method="POST" class="baity-form">
+            {% csrf_token %}
+            
+            <!-- Manejo de errores (ej. contraseña incorrecta) -->
+            {% if form.non_field_errors %}
+                <div style="background-color: rgba(220, 53, 69, 0.1); color: #dc3545; padding: 12px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #dc3545; text-align: center; font-weight: 600;">
+                    {{ form.non_field_errors|striptags }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Usuario de Steam:</label>
+                <!-- Renderizado manual para inyectar clases propias si fuera necesario, aunque CSS general ya lo cubre -->
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Contraseña:</label>
+                {{ form.password }}
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 2.5rem;">
+                <a href="{% url 'inicio' %}" class="btn-primary" style="background: transparent; color: var(--text-muted); border: 1px solid var(--card-border); text-align: center; flex: 0.4;">Huir</a>
+                <button type="submit" class="btn-primary" style="flex: 1;">Entrar al Acceso Anticipado</button>
+            </div>
+            
+            <!-- Campo oculto requerido por el sistema de auth de Django -->
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </section>
+</div>
 {% endblock %}

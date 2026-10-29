@@ -1,0 +1,85 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | Baity Lab Admin{% endblock %}
+
+{% block extrastyle %}
+<!-- Importamos la fuente de tu proyecto -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+    /* Sobrescribimos las variables nativas del Admin de Django con el estilo Vertedero */
+    :root {
+        --primary: #556b2f;
+        --secondary: #1a1a1a;
+        --accent: #9acd32;
+        --primary-fg: #ffffff;
+        
+        --body-fg: #e0e0e0;
+        --body-bg: #1a1a1a;
+        --body-quiet-color: #a0a0a0;
+        --body-loud-color: #ffffff;
+        
+        --header-color: #1a1a1a;
+        --header-branding-color: #556b2f;
+        --header-bg: #111111;
+        --header-link-color: #ffffff;
+        
+        --breadcrumbs-fg: #9acd32;
+        --breadcrumbs-link-fg: #e0e0e0;
+        --breadcrumbs-bg: #262626;
+        
+        --link-fg: #9acd32;
+        --link-hover-color: #adff2f;
+        --link-selected-fg: #adff2f;
+        
+        --hairline-color: #333333;
+        --border-color: #444444;
+        
+        --darkened-bg: #262626;
+        --selected-bg: rgba(85, 107, 47, 0.2);
+        --selected-row: rgba(85, 107, 47, 0.2);
+        
+        --button-bg: #556b2f;
+        --button-hover-bg: #6b8e23;
+        --default-button-bg: #556b2f;
+        --default-button-hover-bg: #6b8e23;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+
+    #header {
+        border-bottom: 3px solid var(--primary);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    #branding h1 {
+        font-weight: 800;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Ajuste para que las tablas y módulos se vean bien en modo oscuro */
+    .module {
+        background: var(--darkened-bg);
+    }
+    .module h2, .module caption, .inline-group h2 {
+        background: var(--primary);
+        color: var(--primary-fg);
+    }
+</style>
+{% endblock %}
+
+<!-- Modificamos la cabecera para poner tu logo y un enlace de vuelta al inicio -->
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'inicio' %}" style="text-decoration: none; color: inherit;">
+        <img src="{% static 'images/logo.png' %}" alt="Logo" style="height: 40px; border-radius: 50%; border: 2px solid var(--primary);">
+        Panel del Vertedero
+    </a>
+</h1>
+{% endblock %}

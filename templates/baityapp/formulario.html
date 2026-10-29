@@ -1,191 +1,60 @@
+{% extends "baityapp/inicio.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario - Baity Lab</title>
-    <style>
-        /* Estilos generales */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 20px;
-            color: #333333;
-        }
 
-        /* Estilos del menú de navegación superior */
-        .main-nav {
-            background-color: #ffffff;
-            padding: 1rem 1.5rem;
-            margin: 0 auto 2rem auto;
-            max-width: 600px;
-            border-radius: 12px;
-            border: 1px solid #dcdcdc;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-        .main-nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-        }
-        .main-nav a {
-            text-decoration: none;
-            color: #556b2f;
-            font-weight: 600;
-            font-size: 1.05rem;
-            transition: color 0.3s ease, transform 0.3s ease;
-            display: inline-block;
-        }
-        .main-nav a:hover {
-            color: #6b8e23;
-            transform: translateY(-2px);
-        }
+{% block contenido %}
+<div class="main-container" style="max-width: 600px; margin: 0 auto;">
+    <section class="form-section" id="preorder">
+        <h2>Reportar Bug o Precomprar Humo</h2>
+        
+        <!-- Mensajito verde de éxito pulido para modo oscuro/claro -->
+        {% if exito %}
+            <div style="background-color: rgba(40, 167, 69, 0.1); color: #28a745; padding: 15px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #28a745; text-align: center; font-weight: 600;">
+                ¡Queja enviada al vacío con éxito!
+            </div>
+        {% endif %}
 
-        .main-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        h1, h2 {
-            text-align: center;
-            color: #111111;
-        }
-
-        /* --- ESTILOS DEL FORMULARIO --- */
-        .form-section {
-            background: #ffffff;
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 3rem;
-        }
-
-        .baity-form .form-group {
-            margin-bottom: 1.25rem;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .baity-form label {
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: #444444;
-        }
-
-        .baity-form input,
-        .baity-form select,
-        .baity-form textarea {
-            padding: 0.75rem;
-            border: 1px solid #cccccc;
-            border-radius: 6px;
-            font-size: 1rem;
-            background: #ffffff;
-            color: #333333;
-            font-family: inherit;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .baity-form input:focus,
-        .baity-form select:focus,
-        .baity-form textarea:focus {
-            outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-        }
-
-        .baity-form textarea {
-            resize: vertical;
-        }
-
-        .baity-form .btn-primary {
-            width: 100%;
-            padding: 0.85rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            margin-top: 1rem;
-            background-color: #6366f1;
-            color: #ffffff;
-            transition: background-color 0.2s ease;
-        }
-
-        .baity-form .btn-primary:hover {
-            background-color: #4f46e5;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Menú de navegación integrado -->
-    <nav class="main-nav">
-        <ul>
-            <li><a href="{% url 'inicio' %}">Inicio</a></li>
-            <li><a href="{% url 'galeria' %}">Galería</a></li>
-        </ul>
-    </nav>
-
-    <div class="main-container">
-        <section class="form-section" id="preorder">
-            <h2>Reportar Bug o Precomprar Humo</h2>
+        <form method="POST" class="baity-form">
+            {% csrf_token %}
             
-            <!-- Mensajito verde de éxito si todo sale bien -->
-            {% if exito %}
-                <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
-                    ¡Queja enviada al vacío con éxito!
-                </div>
-            {% endif %}
+            <!-- Datos del usuario autocompletados y bloqueados -->
+            <div class="form-group">
+                <label for="nombre">Tu Nick de Steam:</label>
+                <input type="text" id="nombre" name="nick_steam" value="{{ user.username }}" readonly style="opacity: 0.6; cursor: not-allowed;" title="Ya sabemos quién eres.">
+            </div>
+            
+            <div class="form-group">
+                <label for="correo">Correo (para ignorar tus reclamaciones):</label>
+                <input type="email" id="correo" name="correo" value="{{ user.email }}" readonly style="opacity: 0.6; cursor: not-allowed;">
+            </div>
+            
+            <!-- 1. EL DESPLEGABLE DE LA EMPRESA (Conectado a la Base de Datos) -->
+            <div class="form-group">
+                <label for="entidad">Estudio a funar:</label>
+                <select id="entidad" name="entidad_involucrada" required>
+                    <option value="">Selecciona quién te robó...</option>
+                    {% for ent in entidades %}
+                        <option value="{{ ent.id_entidad }}">{{ ent.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-            <form method="POST" class="baity-form">
-                {% csrf_token %}
-                
-                <div class="form-group">
-                    <label for="nombre">Tu Nick de Steam:</label>
-                    <input type="text" id="nombre" name="nick_steam" placeholder="Ej. JuanitoOptimizer99" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="correo">Correo (para ignorar tus reclamaciones):</label>
-                    <input type="email" id="correo" name="correo" placeholder="Ej. juanito@gmail.com" required>
-                </div>
-                
-                <!-- 1. EL DESPLEGABLE DE LA EMPRESA (Conectado a la Base de Datos) -->
-                <div class="form-group">
-                    <label for="entidad">Estudio a funar:</label>
-                    <select id="entidad" name="entidad_involucrada" required>
-                        <option value="">Selecciona quién te robó...</option>
-                        {% for ent in entidades %}
-                            <option value="{{ ent.id_entidad }}">{{ ent.nombre }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <!-- 2. EL DESPLEGABLE DEL TIPO DE ESTAFA (Tus opciones divertidas) -->
-                <div class="form-group">
-                    <label for="tipo">Tipo de Estafa:</label>
-                    <select id="tipo" name="tipo_estafa" required>
-                        <option value="Bug Catastrófico del Día 1">Bug Catastrófico del Día 1</option>
-                        <option value="Juego a 80€ sin terminar">Juego a 80€ sin terminar</option>
-                        <option value="Promesa falsa de Molyneux">Promesa falsa de Molyneux</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="mensaje">Cuéntanos tu sufrimiento:</label>
-                    <textarea id="mensaje" name="mensaje" rows="4" placeholder="Mi PC explotó al iniciar el menú principal..." required></textarea>
-                </div>
-                
-                <button type="submit" class="btn-primary">Enviar Queja al Vacío</button>
-            </form>
-        </section>
-    </div>
-
-</body>
-</html>
+            <!-- 2. EL DESPLEGABLE DEL TIPO DE ESTAFA -->
+            <div class="form-group">
+                <label for="tipo">Tipo de Estafa:</label>
+                <select id="tipo" name="tipo_estafa" required>
+                    <option value="Bug Catastrófico del Día 1">Bug Catastrófico del Día 1</option>
+                    <option value="Juego a 80€ sin terminar">Juego a 80€ sin terminar</option>
+                    <option value="Promesa falsa de Molyneux">Promesa falsa de Molyneux</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="mensaje">Cuéntanos tu sufrimiento:</label>
+                <textarea id="mensaje" name="mensaje" rows="4" placeholder="Mi PC explotó al iniciar el menú principal..." required></textarea>
+            </div>
+            
+            <button type="submit" class="btn-primary">Enviar Queja al Vacío</button>
+        </form>
+    </section>
+</div>
+{% endblock %}

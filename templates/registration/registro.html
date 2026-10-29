@@ -1,0 +1,44 @@
+{% extends "baityapp/inicio.html" %}
+{% load static %}
+
+{% block contenido %}
+<div style="max-width: 450px; margin: 4rem auto; padding: 0 15px;">
+    <section class="form-section">
+        
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <img src="{% static 'images/logo.png' %}" alt="Baity Lab Logo" style="width: 110px; height: 110px; object-fit: cover; border-radius: 50%; box-shadow: var(--shadow); margin-bottom: 1rem; border: 2px solid var(--primary);">
+            <h2 style="color: var(--primary); font-weight: 800; margin-bottom: 0.5rem; font-size: 1.8rem;">Únete al Vertedero</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Crea tu cuenta para quejarte con propiedad.</p>
+        </div>
+
+        <form method="POST" class="baity-form">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div style="background-color: rgba(220, 53, 69, 0.1); color: #dc3545; padding: 12px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #dc3545; text-align: center; font-weight: 600; font-size: 0.9rem;">
+                    Revisa los errores abajo e inténtalo de nuevo.
+                </div>
+            {% endif %}
+
+            <!-- Renderizamos los campos (Usuario y Contraseñas) -->
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <span style="color: #dc3545; font-size: 0.85rem; margin-top: 5px;">{{ field.errors.0 }}</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div style="display: flex; gap: 1rem; margin-top: 2.5rem;">
+                <a href="{% url 'inicio' %}" class="btn-primary" style="background: transparent; color: var(--text-muted); border: 1px solid var(--card-border); text-align: center; flex: 0.4;">Cancelar</a>
+                <button type="submit" class="btn-primary" style="flex: 1;">Crear Cuenta</button>
+            </div>
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <a href="{% url 'login' %}" style="color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem;">¿Ya tienes cuenta? Inicia sesión aquí</a>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock %}

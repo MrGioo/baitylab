@@ -1,6 +1,6 @@
 Abre el panel de XAMPP del computador de la sala e inicia Apache y MySQL.
 Entra a http://localhost/phpmyadmin/.
-Crea una base de datos vacía llamada baitydb.
+Crea una base de datos vacía llamada baitydb, utf8mb4_general_ci.
 
 Descomprime tu proyecto, haz clic derecho en la carpeta y abre la terminal (o ábrela en VS Code).
 Crea el entorno virtual usando el Python estable del laboratorio:

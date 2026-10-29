@@ -12,35 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
     <script src="{% static 'JS/main.js' %}"></script>
-    <style>
-        /* Estilos rápidos para el menú de navegación integrado */
-        .main-nav {
-            background-color: var(--bg-card, rgba(255, 255, 255, 0.05));
-            padding: 0.75rem 1.5rem;
-            margin: 1rem 0 2rem 0;
-            border-radius: 8px;
-            border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
-        }
-        .main-nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-        }
-        .main-nav a {
-            text-decoration: none;
-            color: var(--text-main, #6366f1);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: opacity 0.2s ease;
-        }
-        .main-nav a:hover {
-            opacity: 0.7;
-            text-decoration: underline;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="container">
@@ -54,30 +26,29 @@
                     <a class="btn-primary" href="/admin/" style="background-color: #dc3545;">Panel Admin</a>
                 {% endif %}
                 
-                <a class="btn-primary" href="#preorder">Precomprar Humo</a>
+                {% if not user.is_authenticated %}
+                    <a class="btn-primary" href="{% url 'registro' %}">Registrarse</a>
+                {% endif %}
             </div>
         </header>
 
-        <!-- MENÚ DE NAVEGACIÓN A LAS OTRAS PÁGINAS -->
+        <!-- MENÚ DE NAVEGACIÓN PRINCIPAL -->
         <nav class="main-nav">
-            <ul>
-                <li><a href="{% url 'galeria' %}">Galería</a></li>
-                <li><a href="{% url 'formulario' %}">Formulario</a></li>
-                
-                <!-- Agregamos iniciar y cerrar sesión -->
+                <ul>
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link text-warning" href="#">Usuario: <b>{{ user.username }}</b></a>
+                <li><a href="{% url 'galeria' %}" class="nav-link">Galería</a></li>
+                <li><a href="{% url 'formulario' %}" class="nav-link">Formulario</a></li>
+                    <li class="nav-user-info">
+                        <span class="user-badge">👤 {{ user.username }}</span>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-warning" href="{% url 'logout' %}">Cerrar Sesión</a>
+                    <li>
+                        <a class="nav-link logout-btn" href="{% url 'logout' %}">Huir (Cerrar Sesión)</a>
                     </li>
                 {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
+                    <li>
+                        <a class="nav-link login-btn" href="{% url 'login' %}">Entrar al Vertedero</a>
                     </li>
-                {% endif %}
-                <!-- -------------------------------- -->
+                    {% endif %}
             </ul>
         </nav>
         <main>
