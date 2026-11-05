@@ -1,0 +1,22 @@
+{% extends "baityapp/inicio.html" %}
+
+{% block contenido %}
+<div class="main-container" style="max-width: 500px; margin: 4rem auto; padding: 0 15px;">
+    <section class="form-section" style="text-align: center;">
+        <h2 style="color: #dc3545; margin-bottom: 1rem;">¿Eliminar Estudio?</h2>
+        
+        <p style="color: var(--text); margin-bottom: 2rem; font-size: 1.1rem;">
+            Estás a punto de borrar el estudio <strong>{{ entidad.nombre }}</strong>. <br>
+            ¡OJO! Esto borrará en cascada todas las quejas asociadas a esta empresa. <br><br>¿Continuar?
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="{% url 'mi_panel_admin' %}" class="btn-primary" style="background: transparent; color: var(--text-muted); border: 1px solid var(--card-border);">Cancelar</a>
+                <button type="submit" class="btn-primary" style="background-color: #dc3545;">Sí, destruir</button>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock %}

@@ -23,7 +23,7 @@
                 
                 <!-- BOTÓN EXCLUSIVO PARA EL ADMIN -->
                 {% if user.is_superuser %}
-                    <a class="btn-primary" href="/admin/" style="background-color: #dc3545;">Panel Admin</a>
+                    <a class="btn-primary" href="{% url 'mi_panel_admin' %}" style="background-color: #dc3545;">Mi Panel Admin</a>
                 {% endif %}
                 
                 {% if not user.is_authenticated %}

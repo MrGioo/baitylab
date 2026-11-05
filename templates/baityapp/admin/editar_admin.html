@@ -1,0 +1,49 @@
+{% extends "baityapp/inicio.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="main-container" style="max-width: 600px; margin: 2rem auto; padding: 0 15px;">
+    <section class="form-section">
+        <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--text);">Editar Queja #{{ reporte.id }}</h2>
+        
+        <form method="POST" class="baity-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>Usuario (No editable):</label>
+                <input type="text" value="{{ reporte.usuario.nick_steam }}" readonly style="opacity: 0.6; cursor: not-allowed;">
+            </div>
+            
+            <div class="form-group">
+                <label for="entidad">Estudio a funar:</label>
+                <select id="entidad" name="entidad_involucrada" required>
+                    {% for ent in entidades %}
+                        <option value="{{ ent.id_entidad }}" {% if ent.id_entidad == reporte.entidad_involucrada.id_entidad %}selected{% endif %}>
+                            {{ ent.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tipo">Tipo de Estafa:</label>
+                <select id="tipo" name="tipo_estafa" required>
+                    <option value="Bug Catastrófico del Día 1" {% if reporte.tipo_estafa == 'Bug Catastrófico del Día 1' %}selected{% endif %}>Bug Catastrófico del Día 1</option>
+                    <option value="Juego a 80€ sin terminar" {% if reporte.tipo_estafa == 'Juego a 80€ sin terminar' %}selected{% endif %}>Juego a 80€ sin terminar</option>
+                    <option value="Promesa falsa de Molyneux" {% if reporte.tipo_estafa == 'Promesa falsa de Molyneux' %}selected{% endif %}>Promesa falsa de Molyneux</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="mensaje">Mensaje:</label>
+                <textarea id="mensaje" name="mensaje" rows="4" required>{{ reporte.mensaje }}</textarea>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <a href="{% url 'mi_panel_admin' %}" class="btn-primary" style="background: transparent; color: var(--text-muted); border: 1px solid var(--card-border); text-align: center; flex: 0.4;">Cancelar</a>
+                <button type="submit" class="btn-primary" style="flex: 1;">Guardar Cambios</button>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock %}

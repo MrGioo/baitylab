@@ -1,0 +1,39 @@
+{% extends "baityapp/inicio.html" %}
+
+{% block contenido %}
+<div class="main-container" style="max-width: 600px; margin: 2rem auto; padding: 0 15px;">
+    <section class="form-section">
+        <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--text);">Añadir Nuevo Estudio</h2>
+        
+        <!-- IMPORTANTE: enctype para poder subir archivos -->
+        <form method="POST" enctype="multipart/form-data" class="baity-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="nombre">Nombre del Estudio:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="categoria">Categoría (ej: AAA, Indie, Estafadores):</label>
+                <input type="text" id="categoria" name="categoria" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="descripcion">Descripción de sus fechorías:</label>
+                <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="imagen">Imagen (Opcional):</label>
+                <input type="file" id="imagen" name="imagen" accept="image/*">
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <a href="{% url 'mi_panel_admin' %}" class="btn-primary" style="background: transparent; color: var(--text-muted); border: 1px solid var(--card-border); text-align: center; flex: 0.4;">Cancelar</a>
+                <button type="submit" class="btn-primary" style="flex: 1;">Añadir al Vertedero</button>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock %}

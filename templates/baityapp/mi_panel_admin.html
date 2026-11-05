@@ -1,0 +1,142 @@
+{% extends "baityapp/inicio.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="main-container" style="max-width: 1000px; margin: 2rem auto; padding: 0 15px;">
+    <section class="form-section" style="max-width: 100%;">
+        <h2 style="color: var(--primary); text-align: center; margin-bottom: 2rem;">Panel de Administración del Vertedero</h2>
+        
+        <!-- SECCIÓN DE FILTROS PARA REPORTES -->
+        <form method="GET" style="display: flex; gap: 15px; margin-bottom: 20px; align-items: flex-end; background: var(--darkened-bg); padding: 15px; border-radius: 8px;">
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 5px; color: var(--text);">Filtrar por Estudio:</label>
+                <select name="estudio" style="width: 100%; padding: 8px; border-radius: 4px;">
+                    <option value="">Todos los estudios</option>
+                    {% for ent in entidades %}
+                        <option value="{{ ent.id_entidad }}" {% if filtro_estudio == ent.id_entidad|stringformat:"s" %}selected{% endif %}>{{ ent.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 5px; color: var(--text);">Filtrar por Tipo de Estafa:</label>
+                <select name="tipo" style="width: 100%; padding: 8px; border-radius: 4px;">
+                    <option value="">Todos los tipos</option>
+                    <option value="Bug Catastrófico del Día 1" {% if filtro_tipo == 'Bug Catastrófico del Día 1' %}selected{% endif %}>Bug Catastrófico del Día 1</option>
+                    <option value="Juego a 80€ sin terminar" {% if filtro_tipo == 'Juego a 80€ sin terminar' %}selected{% endif %}>Juego a 80€ sin terminar</option>
+                    <option value="Promesa falsa de Molyneux" {% if filtro_tipo == 'Promesa falsa de Molyneux' %}selected{% endif %}>Promesa falsa de Molyneux</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-primary" style="padding: 8px 20px;">Filtrar</button>
+            <a href="{% url 'mi_panel_admin' %}" class="btn-primary" style="padding: 8px 20px; background: transparent; border: 1px solid var(--primary); color: var(--primary);">Limpiar</a>
+        </form>
+        
+        <!-- TABLA DE REPORTES -->
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; background: var(--card-bg); color: var(--text);">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--primary);">
+                        <th style="padding: 12px;">ID</th>
+                        <th style="padding: 12px;">Usuario</th>
+                        <th style="padding: 12px;">Estudio</th>
+                        <th style="padding: 12px;">Tipo de Estafa</th>
+                        <th style="padding: 12px;">Mensaje</th>
+                        <th style="padding: 12px;">Fecha</th>
+                        <th style="padding: 12px; text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reporte in reportes %}
+                    <tr style="border-bottom: 1px solid var(--card-border);">
+                        <td style="padding: 12px;">{{ reporte.id }}</td>
+                        <td style="padding: 12px;">{{ reporte.usuario.nick_steam }}</td>
+                        <td style="padding: 12px;">{{ reporte.entidad_involucrada.nombre }}</td>
+                        <td style="padding: 12px;">{{ reporte.tipo_estafa }}</td>
+                        <td style="padding: 12px;">{{ reporte.mensaje }}</td>
+                        <td style="padding: 12px;">{{ reporte.fecha|date:"d/m/Y H:i" }}</td>
+                        <td style="padding: 12px; display: flex; gap: 10px; justify-content: center;">
+                            <a href="{% url 'editar_reporte_admin' reporte.id %}" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem;">Editar</a>
+                            <a href="{% url 'eliminar_reporte_admin' reporte.id %}" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem; background-color: #dc3545;">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" style="padding: 20px; text-align: center; color: var(--text-muted);">No hay quejas registradas aún.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TABLA DE ESTUDIOS -->
+        <h2 style="color: var(--primary); text-align: center; margin: 4rem 0 1.5rem;">Gestión de Estudios (Entidades)</h2>
+        
+        <div style="text-align: right; margin-bottom: 15px;">
+            <a href="{% url 'crear_entidad_admin' %}" class="btn-primary">+ Añadir Estudio</a>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; background: var(--card-bg); color: var(--text);">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--primary);">
+                        <th style="padding: 12px;">ID</th>
+                        <th style="padding: 12px;">Nombre</th>
+                        <th style="padding: 12px;">Categoría</th>
+                        <th style="padding: 12px; text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ent in entidades %}
+                    <tr style="border-bottom: 1px solid var(--card-border);">
+                        <td style="padding: 12px;">{{ ent.id_entidad }}</td>
+                        <td style="padding: 12px;">{{ ent.nombre }}</td>
+                        <td style="padding: 12px;">{{ ent.categoria }}</td>
+                        <td style="padding: 12px; display: flex; gap: 10px; justify-content: center;">
+                            <a href="{% url 'editar_entidad_admin' ent.id_entidad %}" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem;">Editar</a>
+                            <a href="{% url 'eliminar_entidad_admin' ent.id_entidad %}" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem; background-color: #dc3545;">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="padding: 20px; text-align: center; color: var(--text-muted);">No hay estudios registrados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TABLA DE USUARIOS -->
+        <h2 style="color: var(--primary); text-align: center; margin: 4rem 0 1.5rem;">Gestión de Usuarios</h2>
+        
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; background: var(--card-bg); color: var(--text);">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--primary);">
+                        <th style="padding: 12px;">ID Usuario</th>
+                        <th style="padding: 12px;">Nick Steam</th>
+                        <th style="padding: 12px;">Correo</th>
+                        <th style="padding: 12px; text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usu in usuarios %}
+                    <tr style="border-bottom: 1px solid var(--card-border);">
+                        <td style="padding: 12px;">{{ usu.id_usuario }}</td>
+                        <td style="padding: 12px;">{{ usu.nick_steam }}</td>
+                        <td style="padding: 12px;">{{ usu.correo }}</td>
+                        <td style="padding: 12px; display: flex; gap: 10px; justify-content: center;">
+                            <a href="{% url 'editar_usuario_admin' usu.id_usuario %}" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem;">Editar</a>
+                            <a href="{% url 'eliminar_usuario_admin' usu.id_usuario %}" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem; background-color: #dc3545;">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="padding: 20px; text-align: center; color: var(--text-muted);">No hay usuarios registrados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+</div>
+{% endblock %}
